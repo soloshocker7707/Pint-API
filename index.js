@@ -23,8 +23,7 @@ const authMiddleware = (req, res, next) => {
   if (!apiKey || !validKeys.includes(apiKey.trim())) {
     return res.status(401).json({ 
       error: 'Invalid API key',
-      path: req.path,
-      keys_found: validKeys.length // This will tell us if it's 0 or more
+      path: req.path
     });
   }
   next();
