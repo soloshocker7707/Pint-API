@@ -70,7 +70,62 @@ app.get('/', (req, res) => {
 app.use(authMiddleware);
 
 app.post('/v1/vat/calculate', (req, res) => {
-  // ... existing implementation remains (omitted for brevity in this scratch thought, but I will include it in the actual call)
+  try {
+    const { items, emirate } = req.body;
+
+    if (!emirate || !VALID_EMIRATES.includes(emirate.toUpperCase())) {
+      return res.status(400).json({ 
+        error: `Invalid or missing emirate code. Must be one of: ${VALID_EMIRATES.join(', ')}` 
+      });
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: "items must be a non-empty array" });
+    }
+
+    let subtotal = 0;
+    let totalVatAmount = 0;
+    
+    const lineItems = items.map(item => {
+      const { name, amount, category } = item;
+      
+      if (typeof amount !== 'number' || amount < 0) {
+          throw new Error(`Invalid amount for item: ${name}`);
+      }
+      
+      const rate = category ? VAT_RATES[category.toLowerCase()] : undefined;
+      if (rate === undefined) {
+         throw new Error(`Invalid category for item: ${name}. Must be 'standard', 'zero_rated', or 'exempt'.`);
+      }
+
+      const vatAmount = amount * rate;
+      const total = amount + vatAmount;
+
+      subtotal += amount;
+      totalVatAmount += vatAmount;
+
+      return {
+        name,
+        amount,
+        category: category.toLowerCase(),
+        vat_rate: rate,
+        vat_amount: vatAmount,
+        total
+      };
+    });
+
+    res.json({
+      subtotal,
+      vat_amount: totalVatAmount,
+      total: subtotal + totalVatAmount,
+      line_items: lineItems,
+      emirate: emirate.toUpperCase(),
+      currency: 'AED'
+    });
+
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 app.post('/v1/invoice/generate', (req, res) => {
