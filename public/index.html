@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pint API | Screenshot & PDF Utility</title>
+    <title>Pint API | Screenshots Without Compromise</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Using Inter for that sharp, brutalist tech feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="glow-container">
-        <div class="glow glow-1"></div>
+    <!-- Dynamic glowing background elements -->
+    <div class="glow-container" id="glow-container">
+        <div class="glow glow-1" id="cursor-glow"></div>
         <div class="glow glow-2"></div>
     </div>
 
@@ -19,18 +21,19 @@
         <div class="logo">PINT<span>API</span></div>
         <div class="nav-links">
             <a href="#features">Features</a>
-            <a href="#docs">Docs</a>
-            <a href="/api/health" class="health-badge">Status: Online</a>
+            <a href="#pricing">Pricing</a>
+            <a href="/api/health" class="health-badge">System: ONLINE</a>
         </div>
     </nav>
 
     <main>
         <section class="hero">
-            <h1 class="reveal">Web Screenshots <br><span>Simplified at the Edge.</span></h1>
-            <p class="subtitle">High-performance API for capturing screenshots, generating PDFs, and creating Open Graph images from any URL. Powered by Puppeteer and Chromium.</p>
+            <div class="hero-badge">BUILT FOR SAAS PLATFORMS</div>
+            <h1 class="reveal">CAPTURE <br>THE WEB. <br><span>FLAWLESSLY.</span></h1>
+            <p class="subtitle">A high-performance screenshot and PDF API. No missing libraries. No headless browser headaches. Just pure, scalable pixel perfection.</p>
             <div class="cta-group">
-                <a href="#docs" class="btn btn-primary">Start Integrating</a>
-                <a href="https://github.com/soloshocker7707/Pint-Api" class="btn btn-secondary">View Repo</a>
+                <a href="#pricing" class="btn btn-primary">View Pricing</a>
+                <a href="#docs" class="btn btn-secondary">Read Docs</a>
             </div>
         </section>
 
@@ -43,8 +46,8 @@
                     <span class="title">POST /v1/screenshot/capture</span>
                 </div>
                 <div class="code-content">
-<pre><code><span class="keyword">curl</span> -X POST https://pint-api.vercel.app/api/v1/screenshot/capture \
--H <span class="string">"x-api-key: your_key"</span> \
+<pre><code><span class="keyword">curl</span> -X POST https://api.pintapi.com/v1/screenshot/capture \
+-H <span class="string">"Authorization: Bearer your_key"</span> \
 -d '{
   <span class="property">"url"</span>: <span class="string">"https://google.com"</span>,
   <span class="property">"fullPage"</span>: <span class="number">true</span>
@@ -53,27 +56,60 @@
             </div>
         </section>
 
-        <section id="features" class="features">
-            <div class="feature-card">
-                <div class="icon">📸</div>
-                <h3>High Fidelity</h3>
-                <p>Full rendering of JavaScript, CSS, and web fonts for perfect captures.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">📄</div>
-                <h3>PDF Generation</h3>
-                <p>Convert any web page to a printable PDF with customizable formats and margins.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🖼️</div>
-                <h3>OG Optimized</h3>
-                <p>Dedicated endpoint for social media preview images (1200x630).</p>
+        <section id="pricing" class="pricing-section">
+            <h2 class="section-title">SCALE WITHOUT LIMITS.</h2>
+            <div class="pricing-grid">
+                <!-- Free Tier -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <h3>Free</h3>
+                        <div class="price">$0<span>/mo</span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="call-limit">100 calls / month</div>
+                        <p>Perfect for testing and side projects.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-card-outline">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="pricing-card featured">
+                    <div class="featured-badge">MOST POPULAR</div>
+                    <div class="card-header">
+                        <h3>Pro</h3>
+                        <div class="price">$99<span>/mo</span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="call-limit">10,000 calls / month</div>
+                        <p>For growing SaaS applications.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-card-primary">Subscribe Now</a>
+                    </div>
+                </div>
+
+                <!-- Expert Tier -->
+                <div class="pricing-card expert">
+                    <div class="card-header">
+                        <h3>Expert</h3>
+                        <div class="price">$199<span>/mo</span></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="call-limit">50,000 calls / month</div>
+                        <p>High volume, uncompromised speed.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-card-expert">Contact Sales</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Pint API Solutions. Built with Puppeteer-core.</p>
+        <p>PINT API &copy; 2026. The API Owned by Performance.</p>
     </footer>
 
     <script src="script.js"></script>
