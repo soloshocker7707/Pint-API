@@ -25,7 +25,11 @@ app.post('/api/v1/screenshot/og', ogHandler);
 app.get('/api/health', healthHandler);
 
 // Static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
