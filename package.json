@@ -17,8 +17,8 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^4.19.2",
-    "puppeteer-core": "22.6.0",
-    "@sparticuz/chromium": "123.0.1",
+    "puppeteer-core": "^24.0.0",
+    "@sparticuz/chromium": "^148.0.0",
     "zuplo": "^6"
   },
   "devDependencies": {
