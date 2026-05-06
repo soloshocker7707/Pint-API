@@ -49,8 +49,9 @@
 <pre><code><span class="keyword">curl</span> -X POST https://api.pintapi.com/v1/screenshot/capture \
 -H <span class="string">"Authorization: Bearer your_key"</span> \
 -d '{
-  <span class="property">"url"</span>: <span class="string">"https://google.com"</span>,
-  <span class="property">"fullPage"</span>: <span class="number">true</span>
+  <span class="property">"url"</span>: <span class="string">"https://any-site.com"</span>,
+  <span class="property">"wait"</span>: <span class="string">"auto"</span>,
+  <span class="property">"stealth"</span>: <span class="number">true</span>
 }'</code></pre>
                 </div>
             </div>
@@ -61,19 +62,27 @@
             <div class="features-grid">
                 <div class="feature-block">
                     <h3>URL & HTML to Any Format</h3>
-                    <p>Convert any live URL or raw HTML string directly into high-fidelity <strong>PNG, JPG, or PDF</strong>. Perfect for automated reporting, social media OG images, or archiving.</p>
+                    <p>Convert any live URL or raw HTML string directly into high-fidelity <strong>PNG, JPG, or PDF</strong>. Perfect for automated reporting or archiving.</p>
                 </div>
                 <div class="feature-block">
-                    <h3>Heavy Websites? No Problem.</h3>
-                    <p>Built with an optimized Puppeteer & Chromium pipeline that waits for network idle states, ensuring web fonts, complex WebGL, and heavy React/Vue SPAs are fully rendered before capturing.</p>
+                    <h3>Smart Wait Engine</h3>
+                    <p>Our <strong>Auto-Stability Engine</strong> detects when a page has actually finished rendering. No more half-loaded frames or mid-animation captures on heavy SPAs.</p>
                 </div>
                 <div class="feature-block">
-                    <h3>Zero Cold Start Anxiety</h3>
-                    <p>Our Vercel Edge integration and optional Browserless WebSocket support means browsers are pre-warmed. Get instant, consistent rendering without the painful 10-second serverless cold starts.</p>
+                    <h3>High-Performance Pooling</h3>
+                    <p>We use a singleton <strong>Browser Pooling</strong> strategy. Warm Lambda functions reuse pre-launched browser instances, cutting latency from seconds to <strong>milliseconds</strong>.</p>
+                </div>
+                <div class="feature-block">
+                    <h3>Anti-Bot Stealth Mode</h3>
+                    <p>Bypass detection with ease. We rotate modern <strong>User-Agents</strong> and hide Puppeteer footprints (Webdriver evasions) to ensure you get the data, not a captcha.</p>
+                </div>
+                <div class="feature-block">
+                    <h3>Resilient Retry Logic</h3>
+                    <p>3-attempt auto-retry and <strong>Timeout Fallbacks</strong> mean you always get a result. If a page is too slow, we'll snap what's there instead of throwing an error.</p>
                 </div>
                 <div class="feature-block">
                     <h3>Pixel-Perfect Consistency</h3>
-                    <p>We lock the Chromium binary versions natively. Say goodbye to the dreaded "missing libnss3.so" errors. Your screenshots will look identical today, tomorrow, and next year.</p>
+                    <p>Locked Chromium versions natively. No "missing libnss3.so" errors. Your screenshots will look identical today, tomorrow, and next year.</p>
                 </div>
             </div>
         </section>
