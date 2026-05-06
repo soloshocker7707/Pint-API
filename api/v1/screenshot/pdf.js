@@ -1,5 +1,7 @@
 import { getBrowser, closeBrowser } from '../../../lib/browser.js';
 import { validateZuploSecret, setCorsHeaders } from '../../../lib/auth.js';
+import { applyStealth } from '../../../lib/stealth.js';
+import { waitForStability } from '../../../lib/smart-wait.js';
 
 export default async function handler(req, res) {
   setCorsHeaders(res);
@@ -16,7 +18,9 @@ export default async function handler(req, res) {
     margin = { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' },
     printBackground = true,
     scale = 1,
-    waitUntil = 'networkidle2'
+    wait = 'networkidle2',
+    stealth = true,
+    headers = {}
   } = req.body;
 
   if (!url && !html) {
@@ -37,6 +41,16 @@ export default async function handler(req, res) {
       browser = await getBrowser();
       page = await browser.newPage();
       
+      // 1. Apply Stealth
+      if (stealth) {
+        await applyStealth(page);
+      }
+
+      // 2. Set Custom Headers
+      if (headers && Object.keys(headers).length > 0) {
+        await page.setExtraHTTPHeaders(headers);
+      }
+
       if (html) {
         // If HTML is provided, we use setContent
         await page.setContent(html, { waitUntil: 'networkidle0' });
@@ -44,12 +58,17 @@ export default async function handler(req, res) {
         // If URL is provided, use goto with timeout fallback
         try {
           await page.goto(url, { 
-            waitUntil: waitUntil || 'networkidle2', 
+            waitUntil: wait === 'auto' ? 'networkidle2' : (wait || 'networkidle2'), 
             timeout: 25000 
           });
         } catch (gotoError) {
-          console.warn(`PDF Navigation timeout on attempt ${attempt} for ${url}. Proceeding with partial render.`);
+          console.warn(`PDF Navigation timeout on attempt ${attempt}. Proceeding.`);
         }
+      }
+
+      // 3. Smart Wait Engine
+      if (wait === 'auto') {
+        await waitForStability(page);
       }
 
       const pdfBuffer = await page.pdf({

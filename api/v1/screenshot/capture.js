@@ -1,5 +1,7 @@
 import { getBrowser, closeBrowser } from '../../../lib/browser.js';
 import { validateZuploSecret, setCorsHeaders } from '../../../lib/auth.js';
+import { applyStealth } from '../../../lib/stealth.js';
+import { waitForStability } from '../../../lib/smart-wait.js';
 
 export default async function handler(req, res) {
   setCorsHeaders(res);
@@ -15,9 +17,11 @@ export default async function handler(req, res) {
     fullPage = false, 
     waitFor = 0, 
     waitForSelector,
-    waitUntil = 'networkidle2',
+    wait = 'networkidle2', // Support 'auto' or standard waitUntil
     format = 'png', 
-    quality = 90 
+    quality = 90,
+    stealth = true, // Default to true for better SaaS experience
+    headers = {}
   } = req.body;
 
   if (!url) {
@@ -35,20 +39,34 @@ export default async function handler(req, res) {
       browser = await getBrowser();
       page = await browser.newPage();
       
+      // 1. Apply Anti-Bot Stealth
+      if (stealth) {
+        await applyStealth(page);
+      }
+
+      // 2. Set Custom Headers if any
+      if (headers && Object.keys(headers).length > 0) {
+        await page.setExtraHTTPHeaders(headers);
+      }
+
       await page.setViewport({ 
         width: Number(width), 
         height: Number(height) 
       });
 
-      // Implement Timeout Fallback
+      // 3. Navigation with Fallback
       try {
         await page.goto(url, { 
-          waitUntil: waitUntil || 'networkidle2', 
-          timeout: 25000 // Slightly lower than Vercel's 30s limit to allow cleanup
+          waitUntil: wait === 'auto' ? 'networkidle2' : (wait || 'networkidle2'), 
+          timeout: 25000 
         });
       } catch (gotoError) {
-        console.warn(`Navigation timeout on attempt ${attempt} for ${url}. Attempting screenshot anyway.`);
-        // We don't throw here; we proceed to screenshot what's available
+        console.warn(`Navigation timeout on attempt ${attempt}. Proceeding.`);
+      }
+
+      // 4. Smart Wait Engine
+      if (wait === 'auto') {
+        await waitForStability(page);
       }
 
       // JS Wait Controls
