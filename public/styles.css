@@ -275,7 +275,7 @@ h1 span {
 
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 0;
     border: 3px solid var(--border);
 }
@@ -283,7 +283,7 @@ h1 span {
 .pricing-card {
     background: var(--bg);
     border: 1px solid var(--border);
-    padding: 4rem;
+    padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -294,11 +294,30 @@ h1 span {
     background: #111;
 }
 
+.tier-features {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+
+.tier-features li {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.tier-features li strong {
+    color: var(--text);
+    border-bottom: 2px solid var(--accent);
+}
+
 .price {
     font-size: 6rem;
     font-weight: 900;
     letter-spacing: -4px;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .price span {
@@ -310,7 +329,7 @@ h1 span {
 }
 
 .call-limit {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 900;
     color: var(--text);
     margin-bottom: 1rem;
@@ -318,25 +337,23 @@ h1 span {
     border-bottom: 3px solid var(--border);
 }
 
-.card-body p {
-    color: var(--text-dim);
-    margin-bottom: 3rem;
-    min-height: 48px;
-    font-weight: 600;
-}
-
 /* Featured Card Override */
 .pricing-card.featured {
     background: var(--accent);
     color: #000;
     border: 3px solid #000;
+    z-index: 10;
 }
 
 .pricing-card.featured .card-header h3,
 .pricing-card.featured .price,
 .pricing-card.featured .call-limit,
-.pricing-card.featured .card-body p {
+.pricing-card.featured .tier-features li {
     color: #000;
+}
+
+.pricing-card.featured .tier-features li strong {
+    border-color: #000;
 }
 
 .pricing-card.featured .call-limit {
@@ -346,6 +363,17 @@ h1 span {
 .pricing-card.featured .price span {
     background: #000;
     color: var(--accent);
+}
+
+/* Expert Card Override */
+.pricing-card.expert {
+    background: #000;
+    border: 4px solid var(--border);
+}
+
+.pricing-card.expert .price span {
+    background: #fff;
+    color: #000;
 }
 
 .featured-badge {
@@ -361,6 +389,39 @@ h1 span {
     width: 100%;
     text-align: center;
 }
+
+/* Pricing Buttons */
+.btn-card-outline, .btn-card-primary, .btn-card-expert {
+    width: 100%;
+    text-align: center;
+    padding: 1.2rem;
+    text-decoration: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    transition: all 0.1s;
+}
+
+.btn-card-outline {
+    border: 3px solid var(--border);
+    color: var(--text);
+}
+.btn-card-outline:hover { background: var(--border); color: #000; }
+
+.btn-card-primary {
+    background: #000;
+    color: var(--accent);
+    border: 3px solid #000;
+}
+.btn-card-primary:hover { background: #fff; color: #000; }
+
+.btn-card-expert {
+    background: #fff;
+    color: #000;
+    border: 3px solid #fff;
+}
+.btn-card-expert:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
 /* Footer */
 footer {
