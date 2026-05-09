@@ -1,6 +1,14 @@
 {
   "policies": [
     {
+      "name": "api-key-auth",
+      "policyType": "api-key-inbound",
+      "handler": {
+        "export": "ApiKeyInboundPolicy",
+        "module": "$import(@zuplo/runtime)"
+      }
+    },
+    {
       "name": "inject-zuplo-secret",
       "policyType": "custom-code-inbound",
       "handler": {
@@ -9,17 +17,32 @@
       }
     },
     {
-      "name": "rate-limit-free-tier",
+      "name": "dynamic-rate-limit",
       "policyType": "rate-limit-v1",
       "handler": {
         "export": "RateLimitInboundPolicy",
         "module": "$import(@zuplo/runtime)",
         "options": {
-          "rateLimitBy": "header",
-          "headerName": "x-free-tier",
-          "requestsPerMinute": 5,
-          "limit": 100,
-          "window": "30d"
+          "rateLimitBy": "function",
+          "function": {
+            "export": "getRateLimit",
+            "module": "$import(./modules/tiered-limits)"
+          }
+        }
+      }
+    },
+    {
+      "name": "dynamic-quota",
+      "policyType": "quota-v1",
+      "handler": {
+        "export": "QuotaInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "rateLimitBy": "function",
+          "function": {
+            "export": "getQuota",
+            "module": "$import(./modules/tiered-limits)"
+          }
         }
       }
     }
