@@ -20,8 +20,12 @@
       "name": "dynamic-rate-limit",
       "policyType": "rate-limit-v1",
       "options": {
-        "rateLimitBy": "ip",
-        "requestsPerMinute": 1
+        "rateLimitBy": "function",
+        "requestsPerMinute": 5,
+        "function": {
+          "export": "getRateLimit",
+          "module": "$import(./modules/tiered-limits)"
+        }
       }
     },
     {
@@ -43,14 +47,6 @@
       "handler": {
         "export": "default",
         "module": "$import(./modules/cors-handler)"
-      }
-    },
-    {
-      "name": "debug-log",
-      "policyType": "custom-code-inbound",
-      "handler": {
-        "export": "default",
-        "module": "$import(./modules/debug-log)"
       }
     }
   ]

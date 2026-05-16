@@ -20,12 +20,11 @@
           },
           "policies": {
             "inbound": [
-              "dynamic-rate-limit",
               "cors",
               "supabase-auth",
               "dynamic-quota",
-              "inject-zuplo-secret",
-              "debug-log"
+              "dynamic-rate-limit",
+              "inject-zuplo-secret"
             ]
           }
         },
@@ -78,23 +77,6 @@
             ]
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "url": { "type": "string" },
-                  "template": { "type": "string" },
-                  "data": { "type": "object" },
-                  "format": { "type": "string", "enum": ["A4", "Letter", "Legal"], "default": "A4" },
-                  "landscape": { "type": "boolean", "default": false },
-                  "clean": { "type": "boolean", "default": false }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": { "description": "OK" }
         }
@@ -120,21 +102,6 @@
               "dynamic-rate-limit",
               "inject-zuplo-secret"
             ]
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["title"],
-                "properties": {
-                  "title": { "type": "string" },
-                  "description": { "type": "string" },
-                  "theme": { "type": "string", "enum": ["dark", "light", "green"], "default": "dark" }
-                }
-              }
-            }
           }
         },
         "responses": {
