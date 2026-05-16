@@ -20,7 +20,7 @@
       "name": "dynamic-rate-limit",
       "policyType": "rate-limit-v1",
       "options": {
-        "rateLimitBy": "user",
+        "rateLimitBy": "ip",
         "requestsPerMinute": 1
       }
     },

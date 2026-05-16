@@ -20,10 +20,10 @@
           },
           "policies": {
             "inbound": [
+              "dynamic-rate-limit",
               "cors",
               "supabase-auth",
               "dynamic-quota",
-              "dynamic-rate-limit",
               "inject-zuplo-secret",
               "debug-log"
             ]
