@@ -19,33 +19,25 @@
     {
       "name": "dynamic-rate-limit",
       "policyType": "rate-limit-v1",
-      "handler": {
-        "export": "RateLimitInboundPolicy",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "rateLimitBy": "function",
-          "requestsPerMinute": 5,
-          "function": {
-            "export": "getRateLimit",
-            "module": "$import(./modules/tiered-limits)"
-          }
+      "options": {
+        "rateLimitBy": "function",
+        "requestsPerMinute": 5,
+        "function": {
+          "export": "getRateLimit",
+          "module": "$import(./modules/tiered-limits)"
         }
       }
     },
     {
       "name": "dynamic-quota",
       "policyType": "quota-v1",
-      "handler": {
-        "export": "QuotaInboundPolicy",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "quotaBy": "function",
-          "limit": 250,
-          "period": "30d",
-          "function": {
-            "export": "getQuota",
-            "module": "$import(./modules/tiered-limits)"
-          }
+      "options": {
+        "quotaBy": "function",
+        "limit": 250,
+        "period": "30d",
+        "function": {
+          "export": "getQuota",
+          "module": "$import(./modules/tiered-limits)"
         }
       }
     },
