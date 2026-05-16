@@ -8,7 +8,7 @@ export default async function (request: ZuploRequest, context: ZuploContext) {
   const apiKey = request.headers.get("x-api-key");
 
   if (!apiKey) {
-    return context.unauthorized();
+    return new Response(JSON.stringify({ error: "Unauthorized", message: "API Key missing" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
 
   // 1. Check Supabase for the API Key
@@ -19,7 +19,7 @@ export default async function (request: ZuploRequest, context: ZuploContext) {
 
   if (!supabaseUrl || !supabaseKey) {
     context.log.error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set");
-    return context.internalServerError();
+    return new Response(JSON.stringify({ error: "Internal Server Error", message: "Infrastructure misconfigured" }), { status: 500, headers: { "Content-Type": "application/json" } });
   }
 
   try {
@@ -36,7 +36,7 @@ export default async function (request: ZuploRequest, context: ZuploContext) {
     const profiles = await response.json();
 
     if (!profiles || profiles.length === 0) {
-      return context.unauthorized();
+      return new Response(JSON.stringify({ error: "Unauthorized", message: "Invalid API Key" }), { status: 401, headers: { "Content-Type": "application/json" } });
     }
 
     const userProfile = profiles[0];
