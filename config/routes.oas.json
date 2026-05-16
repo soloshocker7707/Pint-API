@@ -15,7 +15,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app/api"
+              "baseUrl": "https://renderkit-api-delta.vercel.app/api"
             }
           },
           "policies": {
@@ -63,7 +63,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app/api"
+              "baseUrl": "https://renderkit-api-delta.vercel.app/api"
             }
           },
           "policies": {
@@ -106,7 +106,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app/api"
+              "baseUrl": "https://renderkit-api-delta.vercel.app/api"
             }
           },
           "policies": {
@@ -147,7 +147,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app/api"
+              "baseUrl": "https://renderkit-api-delta.vercel.app/api"
             }
           }
         },
@@ -165,7 +165,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app"
+              "baseUrl": "https://renderkit-api-delta.vercel.app"
             }
           }
         },
@@ -198,7 +198,7 @@
             "export": "urlForwardHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "baseUrl": "https://pint-api-delta.vercel.app/{path}"
+              "baseUrl": "https://renderkit-api-delta.vercel.app/{path}"
             }
           }
         },
