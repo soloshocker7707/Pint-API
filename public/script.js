@@ -59,83 +59,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    if (supabase) {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            updateUI(session?.user);
-        });
+    let currentUser = null;
 
-        supabase.auth.onAuthStateChange((event, session) => {
-            console.log('Auth State Change:', event);
-            updateUI(session?.user);
-        });
+    // --- AUTH NAVIGATION ---
+    const navToAuth = () => {
+        window.location.href = 'auth.html';
+    };
 
+    if (authBtn) {
+        authBtn.addEventListener('click', () => {
+            if (currentUser) {
+                const dashboardEl = document.getElementById('dashboard');
+                if (dashboardEl) dashboardEl.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                navToAuth();
+            }
+        });
+    }
+
+    if (heroSignup) heroSignup.addEventListener('click', navToAuth);
+
+    // --- AUTH FORM LOGIC (On auth.html) ---
+    if (authForm && window.location.pathname.includes('auth.html')) {
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
             const submitBtn = document.getElementById('auth-submit');
             
-            if (SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
-                alert('ERROR: Supabase API Key not configured. Please add your Anon Key to script.js.');
-                return;
-            }
-
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing...';
+            submitBtn.textContent = 'Initializing...';
 
             try {
                 if (isLogin) {
                     const { error } = await supabase.auth.signInWithPassword({ email, password });
                     if (error) throw error;
-                    authModal.style.display = 'none';
+                    window.location.href = 'index.html';
                 } else {
-                    const { data, error } = await supabase.auth.signUp({ 
+                    const { error } = await supabase.auth.signUp({ 
                         email, 
                         password,
-                        options: {
-                            emailRedirectTo: window.location.origin
-                        }
+                        options: { emailRedirectTo: window.location.origin }
                     });
                     if (error) throw error;
-                    alert('Registration successful! Please check your email for the confirmation link.');
-                    authModal.style.display = 'none';
+                    alert('Node Registered! Please check your email for activation.');
                 }
             } catch (err) {
-                console.error('Auth Error:', err.message);
-                alert(`Authentication Error: ${err.message}`);
-            } finally {
+                alert('Verification Failed: ' + err.message);
                 submitBtn.disabled = false;
-                submitBtn.textContent = isLogin ? 'Login' : 'Sign Up';
+                submitBtn.textContent = isLogin ? 'Initialize Session' : 'Register Node';
             }
         });
 
-        logoutBtn.addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.reload();
-        });
+        const toggleAuthBtn = document.getElementById('toggle-auth');
+        if (toggleAuthBtn) {
+            toggleAuthBtn.addEventListener('click', () => {
+                isLogin = !isLogin;
+                document.getElementById('auth-title').textContent = isLogin ? 'Identity Verification' : 'New Node Registration';
+                document.getElementById('auth-subtitle').textContent = isLogin ? 'Enter your encrypted credentials.' : 'Create your developer credentials.';
+                document.getElementById('toggle-text').textContent = isLogin ? 'Need to register a new node?' : 'Already have a session?';
+                toggleAuthBtn.textContent = isLogin ? 'Create Account' : 'Login';
+                document.getElementById('auth-submit').textContent = isLogin ? 'Initialize Session' : 'Register Node';
+            });
+        }
     }
 
-    // --- MODAL HANDLERS ---
-    const openAuth = (mode = 'login') => {
-        isLogin = mode === 'login';
-        document.getElementById('auth-title').textContent = isLogin ? 'Welcome Back' : 'Create Account';
-        document.getElementById('auth-subtitle').textContent = isLogin ? 'Enter your details to access your dashboard.' : 'Get your free API key in seconds.';
-        document.getElementById('auth-submit').textContent = isLogin ? 'Login' : 'Sign Up';
-        toggleAuth.textContent = isLogin ? 'Sign Up' : 'Login';
-        authModal.style.display = 'block';
-    };
+    if (supabase) {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            currentUser = session?.user;
+            updateUI(currentUser);
+        });
 
-    if (authBtn) authBtn.addEventListener('click', () => {
-        if (dashboard.style.display === 'block') {
-            // Already in dashboard
-        } else {
-            openAuth('login');
+        supabase.auth.onAuthStateChange((event, session) => {
+            currentUser = session?.user;
+            updateUI(currentUser);
+        });
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
         }
-    });
-
-    if (heroSignup) heroSignup.addEventListener('click', () => openAuth('signup'));
-    if (closeModal) closeModal.addEventListener('click', () => authModal.style.display = 'none');
-    if (toggleAuth) toggleAuth.addEventListener('click', () => openAuth(isLogin ? 'signup' : 'login'));
+    }
 
     // --- INTEGRATION TABS ---
     const tabBtns = document.querySelectorAll('.tab-btn');
