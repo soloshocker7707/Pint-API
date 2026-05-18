@@ -29,7 +29,7 @@
         "timeWindowMinutes": 1,
         "identifier": {
           "export": "getRateLimit",
-          "module": "./modules/tiered-limits"
+          "module": "$import(./modules/tiered-limits)"
         }
       }
     },
@@ -45,7 +45,7 @@
         "period": "monthly",
         "identifier": {
           "export": "getQuota",
-          "module": "./modules/tiered-limits"
+          "module": "$import(./modules/tiered-limits)"
         }
       }
     },
