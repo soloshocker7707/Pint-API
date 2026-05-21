@@ -9,10 +9,20 @@
       }
     },
     {
+      "name": "inject-zuplo-secret",
+      "policyType": "custom-code-inbound",
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/inject-secret)"
+      }
+    },
+    {
       "name": "dynamic-rate-limit",
       "policyType": "rate-limit-v1",
       "options": {
-        "rateLimitOption": {
+        "rateLimitBy": "function",
+        "requestsPerMinute": 5,
+        "function": {
           "export": "getRateLimit",
           "module": "$import(./modules/tiered-limits)"
         }
@@ -22,18 +32,13 @@
       "name": "dynamic-quota",
       "policyType": "quota-v1",
       "options": {
-        "quotaOption": {
+        "quotaBy": "function",
+        "limit": 250,
+        "period": "30d",
+        "function": {
           "export": "getQuota",
           "module": "$import(./modules/tiered-limits)"
         }
-      }
-    },
-    {
-      "name": "inject-zuplo-secret",
-      "policyType": "custom-code-inbound",
-      "handler": {
-        "export": "default",
-        "module": "$import(./modules/inject-secret)"
       }
     },
     {
