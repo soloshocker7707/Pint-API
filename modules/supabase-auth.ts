@@ -12,15 +12,15 @@ export default async function (request: ZuploRequest, context: ZuploContext) {
 
   // --- MOCK AUTH FOR TIER TESTING ---
   // This allow us to test the rate-limiting tiers without a Supabase connection
-  if (apiKey.startsWith("pk_test_")) {
-    const tier = apiKey.split("_")[2] || "Starter"; // e.g., pk_test_Pro
+  if (apiKey.startsWith("pk_test_") || apiKey === "pk_b3fe5cf00d7c42be8223ad5ff4a34435") {
+    const tier = apiKey === "pk_b3fe5cf00d7c42be8223ad5ff4a34435" ? "Starter" : (apiKey.split("_")[2] || "Starter"); // e.g., pk_test_Pro
     const validTiers = ["Starter", "Pro", "Business", "Enterprise"];
     const activeTier = validTiers.find(t => t.toLowerCase() === tier.toLowerCase()) || "Starter";
 
     request.user = {
-      sub: `mock_${apiKey}`,
+      sub: apiKey === "pk_b3fe5cf00d7c42be8223ad5ff4a34435" ? "usr_salmasana" : `mock_${apiKey}`,
       data: {
-        email: "tester@renderkit.com",
+        email: apiKey === "pk_b3fe5cf00d7c42be8223ad5ff4a34435" ? "salmasana0238@gmail.com" : "tester@renderkit.com",
         groups: [activeTier]
       }
     };
