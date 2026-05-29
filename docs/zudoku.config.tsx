@@ -73,9 +73,10 @@ const config: ZudokuConfig = {
       path: "api",
     },
   ],
-  // Configure developer portal authentication here before production use.
+  // Keep the portal API-key management UI disabled until production authentication is configured.
+  // API authentication for RenderKit itself is still handled by the Zuplo gateway.
   apiKeys: {
-    enabled: true,
+    enabled: false,
   },
 };
 
