@@ -1,55 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RenderKit API - Authentication</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-    <nav>
-        <div class="logo">RENDER<span>KIT</span></div>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="playground.html">Playground</a>
-        </div>
-    </nav>
-
-    <main class="container" style="padding: 6rem 0 8rem; max-width: 760px;">
-        <div class="hero" style="padding: 0; margin-bottom: 3rem;">
-            <div class="section-tag">Authentication</div>
-            <h1 style="font-size: 4rem; line-height: 0.95; letter-spacing: -3px; margin-bottom: 1rem;">Access <span style="display:inline;">Portal</span></h1>
-            <p class="hero-subtitle" style="font-size: 1rem; max-width: none; margin-bottom: 0;">Sign in to view your RenderKit dashboard and API key details.</p>
-        </div>
-
-        <div class="brutal-card" style="padding: 2rem;">
-            <h2 id="auth-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Identity Verification</h2>
-            <p id="auth-subtitle" style="color: var(--text-dim); margin-bottom: 2rem;">Enter your encrypted credentials.</p>
-
-            <form id="auth-form" style="display: grid; gap: 1rem;">
-                <div>
-                    <label for="auth-email" style="display:block; margin-bottom: 0.5rem; font-weight: 800;">Email</label>
-                    <input id="auth-email" type="email" required placeholder="you@example.com" style="width: 100%; padding: 1rem; background: #000; color: #fff; border: 3px solid #fff; font: inherit;">
-                </div>
-                <div>
-                    <label for="auth-password" style="display:block; margin-bottom: 0.5rem; font-weight: 800;">Password</label>
-                    <input id="auth-password" type="password" required placeholder="••••••••" style="width: 100%; padding: 1rem; background: #000; color: #fff; border: 3px solid #fff; font: inherit;">
-                </div>
-                <button id="auth-submit" type="submit" class="btn btn-primary">Initialize Session</button>
-            </form>
-
-            <div style="margin-top: 1.5rem; color: var(--text-dim); font-size: 0.95rem;">
-                <span id="toggle-text">Need to register a new node?</span>
-                <button id="toggle-auth" type="button" class="btn btn-secondary" style="margin-left: 1rem; padding: 0.75rem 1rem; font-size: 0.8rem;">Create Account</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RenderKit API - Authentication</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <nav>
+            <div class="logo">RENDER<span>KIT</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="playground.html">Playground</a>
+                <a href="docs.html">Docs</a>
             </div>
-        </div>
-    </main>
+        </nav>
 
-    <script src="config.js"></script>
-    <script src="script.js"></script>
-</body>
+        <main class="container" style="padding: 6rem 0 8rem; max-width: 760px">
+            <div class="hero" style="padding: 0; margin-bottom: 3rem">
+                <div class="section-tag">Authentication</div>
+                <h1
+                    style="
+                        font-size: 4rem;
+                        line-height: 0.95;
+                        letter-spacing: -3px;
+                        margin-bottom: 1rem;
+                    "
+                >
+                    Access <span style="display: inline">Portal</span>
+                </h1>
+                <p
+                    class="hero-subtitle"
+                    style="font-size: 1rem; max-width: none; margin-bottom: 0"
+                >
+                    Sign in to view your RenderKit dashboard and API key
+                    details.
+                </p>
+            </div>
+
+            <div class="brutal-card" style="padding: 2rem">
+                <h2
+                    id="auth-title"
+                    style="font-size: 1.5rem; margin-bottom: 0.5rem"
+                >
+                    Identity Verification
+                </h2>
+                <p
+                    id="auth-subtitle"
+                    style="color: var(--text-dim); margin-bottom: 2rem"
+                >
+                    Enter your encrypted credentials.
+                </p>
+
+                <form id="auth-form" style="display: grid; gap: 1rem">
+                    <div>
+                        <label
+                            for="auth-email"
+                            style="
+                                display: block;
+                                margin-bottom: 0.5rem;
+                                font-weight: 800;
+                            "
+                            >Email</label
+                        >
+                        <input
+                            id="auth-email"
+                            type="email"
+                            required
+                            placeholder="you@example.com"
+                            style="
+                                width: 100%;
+                                padding: 1rem;
+                                background: #000;
+                                color: #fff;
+                                border: 3px solid #fff;
+                                font: inherit;
+                            "
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="auth-password"
+                            style="
+                                display: block;
+                                margin-bottom: 0.5rem;
+                                font-weight: 800;
+                            "
+                            >Password</label
+                        >
+                        <input
+                            id="auth-password"
+                            type="password"
+                            required
+                            placeholder="••••••••"
+                            style="
+                                width: 100%;
+                                padding: 1rem;
+                                background: #000;
+                                color: #fff;
+                                border: 3px solid #fff;
+                                font: inherit;
+                            "
+                        />
+                    </div>
+                    <button
+                        id="auth-submit"
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Initialize Session
+                    </button>
+                </form>
+
+                <div
+                    style="
+                        margin-top: 1.5rem;
+                        color: var(--text-dim);
+                        font-size: 0.95rem;
+                    "
+                >
+                    <span id="toggle-text">Need to register a new node?</span>
+                    <button
+                        id="toggle-auth"
+                        type="button"
+                        class="btn btn-secondary"
+                        style="
+                            margin-left: 1rem;
+                            padding: 0.75rem 1rem;
+                            font-size: 0.8rem;
+                        "
+                    >
+                        Create Account
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <script src="config.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>

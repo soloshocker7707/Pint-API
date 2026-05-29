@@ -1,212 +1,715 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RenderKit API – Simple, Scalable Screenshots</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Using Inter for that sharp, brutalist tech feel -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-    <!-- Dynamic glowing background elements -->
-    <div class="glow-container" id="glow-container">
-        <div class="glow glow-1" id="cursor-glow"></div>
-        <div class="glow glow-2"></div>
-    </div>
-
-    <nav>
-        <div class="logo">RENDER<span>KIT</span></div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#integration">Integration</a>
-            <a href="#pricing">Pricing</a>
-            <button id="auth-btn" class="btn btn-nav" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;">Login</button>
-        </div>
-    </nav>
-
-    <!-- Dashboard View (Hidden by Default) -->
-    <div id="dashboard" class="dashboard-section" style="display: none; padding: 4rem 0; border-bottom: 4px solid #fff;">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 3rem;">
-                <h2 style="font-size: 2rem; font-weight: 900; text-transform: uppercase; margin: 0;">USER_SESSION // <span style="color: var(--accent);">DASHBOARD</span></h2>
-                <button id="logout-btn" class="btn btn-secondary" style="padding: 0.8rem 1.5rem; font-size: 0.8rem;">Terminate Session</button>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
-                <div class="brutal-card" style="padding: 2rem;">
-                    <h3 style="font-size: 1rem; margin-bottom: 1.5rem; color: var(--text-dim);">// INFRASTRUCTURE_KEY</h3>
-                    <div style="background: #000; padding: 1.5rem; border: 3px solid var(--accent); display: flex; justify-content: space-between; align-items: center;">
-                        <code id="display-api-key" style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 1rem;">••••••••••••••••••••••••</code>
-                        <button id="copy-key" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.7rem;">Copy</button>
-                    </div>
-                </div>
-
-                <div class="brutal-card" style="padding: 2rem;">
-                    <h3 style="font-size: 1rem; margin-bottom: 1.5rem; color: var(--text-dim);">// USAGE_TELEMETRY</h3>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                        <span style="font-weight: 800; font-size: 0.9rem;">CURRENT_TIER</span>
-                        <span id="user-tier" style="color: var(--accent); font-weight: 900; font-size: 0.9rem;">FREE_T1</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="font-weight: 800; font-size: 0.9rem;">LOAD_USAGE</span>
-                        <span style="font-weight: 900; font-size: 0.9rem;">0 / 250</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <main id="landing-content">
-        <section class="hero" style="padding: 6rem 0;">
-    <div class="container">
-        <div class="hero-content" style="border-left: 8px solid var(--accent); padding-left: 3rem;">
-            <div class="section-tag">v1.2.0 Stable</div>
-        <h1 style="font-size: 6rem;">Render Screenshots</h1>
-            <p class="hero-subtitle" style="font-size: 1.2rem; margin-bottom: 3rem; max-width: 800px;">Scalable headless browser API for fast, clean screenshots and PDFs.</p>
-            <div class="cta-group">
-                <button id="hero-signup" class="btn btn-primary">Initialize Access</button>
-                <a href="#integration" class="btn btn-secondary" style="text-decoration: none; margin-left: 1rem;">Documentation</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-        <div class="marquee" style="padding: 1rem 0; font-size: 1.2rem;">
-            <div class="marquee-content">
-                STATUS: OPTIMAL // LATEST RENDER: 142ms // NODES ACTIVE: 1,402 // CACHE HIT: 98.4% // STATUS: OPTIMAL // LATEST RENDER: 142ms // NODES ACTIVE: 1,402 // CACHE HIT: 98.4%
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RenderKit API – Simple, Scalable Screenshots</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!-- Using Inter for that sharp, brutalist tech feel -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <!-- Dynamic glowing background elements -->
+        <div class="glow-container" id="glow-container">
+            <div class="glow glow-1" id="cursor-glow"></div>
+            <div class="glow glow-2"></div>
         </div>
 
-        <section id="integration" class="integration-section" style="padding: 8rem 0;">
+        <nav>
+            <div class="logo">RENDER<span>KIT</span></div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="docs.html">Docs</a>
+                <a href="#pricing">Pricing</a>
+                <button
+                    id="auth-btn"
+                    class="btn btn-nav"
+                    style="padding: 0.6rem 1.2rem; font-size: 0.8rem"
+                >
+                    Login
+                </button>
+            </div>
+        </nav>
+
+        <!-- Dashboard View (Hidden by Default) -->
+        <div
+            id="dashboard"
+            class="dashboard-section"
+            style="
+                display: none;
+                padding: 4rem 0;
+                border-bottom: 4px solid #fff;
+            "
+        >
             <div class="container">
-                <div class="section-tag">Integration</div>
-                <h2 style="font-size: 4rem; font-weight: 900; margin-bottom: 3rem;">Seamless Integration.</h2>
-                <p style="font-size:1rem; color: var(--text-dim); max-width:800px; margin-bottom:2rem;">Integrate with our clean, RESTful API—just POST JSON to the endpoint with your API key and get a screenshot or PDF in milliseconds.</p>
-                <div class="integration-tabs" style="box-shadow: 12px 12px 0 var(--accent);">
-                    <div class="tab-headers">
-                        <button class="tab-btn active" data-tab="curl" style="padding: 1.5rem 3rem;">CURL</button>
-                        <button class="tab-btn" data-tab="nodejs" style="padding: 1.5rem 3rem;">NODE.JS</button>
-                        <button class="tab-btn" data-tab="python" style="padding: 1.5rem 3rem;">PYTHON</button>
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        border-bottom: 4px solid var(--accent);
+                        padding-bottom: 1.5rem;
+                        margin-bottom: 3rem;
+                    "
+                >
+                    <h2
+                        style="
+                            font-size: 2rem;
+                            font-weight: 900;
+                            text-transform: uppercase;
+                            margin: 0;
+                        "
+                    >
+                        USER_SESSION //
+                        <span style="color: var(--accent)">DASHBOARD</span>
+                    </h2>
+                    <button
+                        id="logout-btn"
+                        class="btn btn-secondary"
+                        style="padding: 0.8rem 1.5rem; font-size: 0.8rem"
+                    >
+                        Terminate Session
+                    </button>
+                </div>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: repeat(
+                            auto-fit,
+                            minmax(350px, 1fr)
+                        );
+                        gap: 2rem;
+                    "
+                >
+                    <div class="brutal-card" style="padding: 2rem">
+                        <h3
+                            style="
+                                font-size: 1rem;
+                                margin-bottom: 1.5rem;
+                                color: var(--text-dim);
+                            "
+                        >
+                            // INFRASTRUCTURE_KEY
+                        </h3>
+                        <div
+                            style="
+                                background: #000;
+                                padding: 1.5rem;
+                                border: 3px solid var(--accent);
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                            "
+                        >
+                            <code
+                                id="display-api-key"
+                                style="
+                                    font-family:
+                                        &quot;JetBrains Mono&quot;, monospace;
+                                    color: var(--accent);
+                                    font-size: 1rem;
+                                "
+                                >••••••••••••••••••••••••</code
+                            >
+                            <button
+                                id="copy-key"
+                                class="btn btn-primary"
+                                style="padding: 0.4rem 1rem; font-size: 0.7rem"
+                            >
+                                Copy
+                            </button>
+                        </div>
                     </div>
-                    <div class="tab-content active" id="curl" style="padding: 0;">
-                        <div class="code-window" style="min-height: 300px; padding: 2rem;">
-                            <div class="code-content" style="font-size: 1rem;">
-<pre><code><span class="keyword">curl</span> -X POST https://api.renderkit.com/v1/screenshot/capture \
+
+                    <div class="brutal-card" style="padding: 2rem">
+                        <h3
+                            style="
+                                font-size: 1rem;
+                                margin-bottom: 1.5rem;
+                                color: var(--text-dim);
+                            "
+                        >
+                            // USAGE_TELEMETRY
+                        </h3>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            <span style="font-weight: 800; font-size: 0.9rem"
+                                >CURRENT_TIER</span
+                            >
+                            <span
+                                id="user-tier"
+                                style="
+                                    color: var(--accent);
+                                    font-weight: 900;
+                                    font-size: 0.9rem;
+                                "
+                                >FREE_T1</span
+                            >
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                            "
+                        >
+                            <span style="font-weight: 800; font-size: 0.9rem"
+                                >LOAD_USAGE</span
+                            >
+                            <span style="font-weight: 900; font-size: 0.9rem"
+                                >0 / 250</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main id="landing-content">
+            <section class="hero" style="padding: 6rem 0">
+                <div class="container">
+                    <div
+                        class="hero-content"
+                        style="
+                            border-left: 8px solid var(--accent);
+                            padding-left: 3rem;
+                        "
+                    >
+                        <div class="section-tag">v1.2.0 Stable</div>
+                        <h1 style="font-size: 6rem">Render Screenshots</h1>
+                        <p
+                            class="hero-subtitle"
+                            style="
+                                font-size: 1.2rem;
+                                margin-bottom: 3rem;
+                                max-width: 800px;
+                            "
+                        >
+                            Scalable headless browser API for fast, clean
+                            screenshots and PDFs.
+                        </p>
+                        <div class="cta-group">
+                            <button id="hero-signup" class="btn btn-primary">
+                                Initialize Access
+                            </button>
+                            <a
+                                href="docs.html"
+                                class="btn btn-secondary"
+                                style="text-decoration: none; margin-left: 1rem"
+                                >Documentation</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="marquee" style="padding: 1rem 0; font-size: 1.2rem">
+                <div class="marquee-content">
+                    STATUS: OPTIMAL // LATEST RENDER: 142ms // NODES ACTIVE:
+                    1,402 // CACHE HIT: 98.4% // STATUS: OPTIMAL // LATEST
+                    RENDER: 142ms // NODES ACTIVE: 1,402 // CACHE HIT: 98.4%
+                </div>
+            </div>
+
+            <section
+                id="integration"
+                class="integration-section"
+                style="padding: 8rem 0"
+            >
+                <div class="container">
+                    <div class="section-tag">Integration</div>
+                    <h2
+                        style="
+                            font-size: 4rem;
+                            font-weight: 900;
+                            margin-bottom: 3rem;
+                        "
+                    >
+                        Seamless Integration.
+                    </h2>
+                    <p
+                        style="
+                            font-size: 1rem;
+                            color: var(--text-dim);
+                            max-width: 800px;
+                            margin-bottom: 2rem;
+                        "
+                    >
+                        Integrate with our clean, RESTful API—just POST JSON to
+                        the endpoint with your API key and get a screenshot or
+                        PDF in milliseconds.
+                    </p>
+                    <div
+                        class="integration-tabs"
+                        style="box-shadow: 12px 12px 0 var(--accent)"
+                    >
+                        <div class="tab-headers">
+                            <button
+                                class="tab-btn active"
+                                data-tab="curl"
+                                style="padding: 1.5rem 3rem"
+                            >
+                                CURL
+                            </button>
+                            <button
+                                class="tab-btn"
+                                data-tab="nodejs"
+                                style="padding: 1.5rem 3rem"
+                            >
+                                NODE.JS
+                            </button>
+                            <button
+                                class="tab-btn"
+                                data-tab="python"
+                                style="padding: 1.5rem 3rem"
+                            >
+                                PYTHON
+                            </button>
+                        </div>
+                        <div
+                            class="tab-content active"
+                            id="curl"
+                            style="padding: 0"
+                        >
+                            <div
+                                class="code-window"
+                                style="min-height: 300px; padding: 2rem"
+                            >
+                                <div
+                                    class="code-content"
+                                    style="font-size: 1rem"
+                                >
+                                    <pre><code><span class="keyword">curl</span> -X POST https://api.renderkit.com/v1/screenshot/capture \
 -H <span class="string">"x-api-key: RK_PRO_92"</span> \
 -d '{
   <span class="property">"url"</span>: <span class="string">"https://any-site.com"</span>,
   <span class="property">"clean"</span>: <span class="number">true</span>,
   <span class="property">"wait"</span>: <span class="string">"smart"</span>
 }'</code></pre>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="features" style="padding: 6rem 0; background: #080808;">
-            <div class="container">
-                <div class="section-tag">Capabilities</div>
-                <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 4rem;">CORE <span>ARCHITECTURE.</span></h2>
-                <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
-                    <div class="feature-item" style="padding: 2.5rem; border: 1px solid #222;">
-                        <div style="font-size: 0.7rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem;">// 01_HEURISTICS</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">AUTO CLEAN ENGINE</h3>
-                         <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Our engine removes banners and popups automatically for clean captures.</p>
-                        <div class="code-snippet" style="margin-top: 1.5rem;">"clean": true</div>
-                    </div>
-                    <div class="feature-item" style="padding: 2.5rem; border: 1px solid #222;">
-                        <div style="font-size: 0.7rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem;">// 02_SYNCHRONIZATION</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">SMART WAIT V2</h3>
-                         <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Smart Wait ensures pages are fully loaded before capture.</p>
-                        <div class="code-snippet" style="margin-top: 1.5rem;">"wait": "smart"</div>
-                    </div>
-                    <div class="feature-item" style="padding: 2.5rem; border: 1px solid #222;">
-                        <div style="font-size: 0.7rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem;">// 03_FINGERPRINTING</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">STEALTH PIPELINE</h3>
-                         <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Stealth mode bypasses bot detection for reliable rendering.</p>
-                        <div class="code-snippet" style="margin-top: 1.5rem;">"stealth": true</div>
-                    </div>
-                    <div class="feature-item" style="padding: 2.5rem; border: 1px solid #222;">
-                        <div style="font-size: 0.7rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem;">// 04_TRANSFORMATION</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">PDF & OG GENERATION</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Convert any live URL or Liquid HTML template into high-fidelity PDF documents or dynamic OpenGraph social cards. Perfect for automated invoicing, reports, and dynamic content previews at scale.</p>
-                        <div class="code-snippet" style="margin-top: 1.5rem;">POST /v1/screenshot/pdf</div>
+            <section id="features" style="padding: 6rem 0; background: #080808">
+                <div class="container">
+                    <div class="section-tag">Capabilities</div>
+                    <h2
+                        style="
+                            font-size: 3rem;
+                            font-weight: 900;
+                            margin-bottom: 4rem;
+                        "
+                    >
+                        CORE <span>ARCHITECTURE.</span>
+                    </h2>
+                    <div
+                        class="features-grid"
+                        style="
+                            grid-template-columns: repeat(
+                                auto-fit,
+                                minmax(400px, 1fr)
+                            );
+                            gap: 2rem;
+                        "
+                    >
+                        <div
+                            class="feature-item"
+                            style="padding: 2.5rem; border: 1px solid #222"
+                        >
+                            <div
+                                style="
+                                    font-size: 0.7rem;
+                                    font-weight: 900;
+                                    color: var(--accent);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                // 01_HEURISTICS
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem">
+                                AUTO CLEAN ENGINE
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 0.95rem;
+                                    color: var(--text-dim);
+                                    line-height: 1.6;
+                                "
+                            >
+                                Our engine removes banners and popups
+                                automatically for clean captures.
+                            </p>
+                            <div
+                                class="code-snippet"
+                                style="margin-top: 1.5rem"
+                            >
+                                "clean": true
+                            </div>
+                        </div>
+                        <div
+                            class="feature-item"
+                            style="padding: 2.5rem; border: 1px solid #222"
+                        >
+                            <div
+                                style="
+                                    font-size: 0.7rem;
+                                    font-weight: 900;
+                                    color: var(--accent);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                // 02_SYNCHRONIZATION
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem">
+                                SMART WAIT V2
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 0.95rem;
+                                    color: var(--text-dim);
+                                    line-height: 1.6;
+                                "
+                            >
+                                Smart Wait ensures pages are fully loaded before
+                                capture.
+                            </p>
+                            <div
+                                class="code-snippet"
+                                style="margin-top: 1.5rem"
+                            >
+                                "wait": "smart"
+                            </div>
+                        </div>
+                        <div
+                            class="feature-item"
+                            style="padding: 2.5rem; border: 1px solid #222"
+                        >
+                            <div
+                                style="
+                                    font-size: 0.7rem;
+                                    font-weight: 900;
+                                    color: var(--accent);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                // 03_FINGERPRINTING
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem">
+                                STEALTH PIPELINE
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 0.95rem;
+                                    color: var(--text-dim);
+                                    line-height: 1.6;
+                                "
+                            >
+                                Stealth mode bypasses bot detection for reliable
+                                rendering.
+                            </p>
+                            <div
+                                class="code-snippet"
+                                style="margin-top: 1.5rem"
+                            >
+                                "stealth": true
+                            </div>
+                        </div>
+                        <div
+                            class="feature-item"
+                            style="padding: 2.5rem; border: 1px solid #222"
+                        >
+                            <div
+                                style="
+                                    font-size: 0.7rem;
+                                    font-weight: 900;
+                                    color: var(--accent);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                // 04_TRANSFORMATION
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem">
+                                PDF & OG GENERATION
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 0.95rem;
+                                    color: var(--text-dim);
+                                    line-height: 1.6;
+                                "
+                            >
+                                Convert any live URL or Liquid HTML template
+                                into high-fidelity PDF documents or dynamic
+                                OpenGraph social cards. Perfect for automated
+                                invoicing, reports, and dynamic content previews
+                                at scale.
+                            </p>
+                            <div
+                                class="code-snippet"
+                                style="margin-top: 1.5rem"
+                            >
+                                POST /v1/screenshot/pdf
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="pricing" style="padding: 8rem 0; background: #000; border-top: 4px solid #fff;">
-            <div class="container">
-                <div class="section-tag">Pricing</div>
-                <h2 style="font-size: 4rem; font-weight: 900; margin-bottom: 4rem;">CHOOSE YOUR <span>POWER.</span></h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-                    <!-- Starter -->
-                    <div class="brutal-card" style="padding: 2.5rem;">
-                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">STARTER</h3>
-                        <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 2rem;">$0</div>
-                        <ul style="list-style: none; margin-bottom: 3rem; font-size: 0.9rem;">
-                            <li style="margin-bottom: 0.8rem;">✓ 250 Requests / Mo</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Standard Stealth</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Community Support</li>
-                        </ul>
-                        <button class="btn btn-secondary" style="width: 100%; padding: 1rem;">Select</button>
-                    </div>
-                    <!-- Pro -->
-                    <div class="brutal-card" style="padding: 2.5rem; background: var(--accent); color: #000; border-color: #000; box-shadow: 12px 12px 0 #fff;">
-                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">PRO</h3>
-                        <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 2rem;">$29</div>
-                        <ul style="list-style: none; margin-bottom: 3rem; font-size: 0.9rem; font-weight: 900;">
-                            <li style="margin-bottom: 0.8rem;">✓ 5,000 Requests / Mo</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Auto-Clean Heuristics</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Smart Stability</li>
-                        </ul>
-                        <button class="btn-primary" style="width: 100%; padding: 1rem; border: 4px solid #000;">Deploy Pro</button>
-                    </div>
-                    <!-- Business -->
-                    <div class="brutal-card" style="padding: 2.5rem;">
-                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">BUSINESS</h3>
-                        <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 2rem;">$99</div>
-                        <ul style="list-style: none; margin-bottom: 3rem; font-size: 0.9rem;">
-                            <li style="margin-bottom: 0.8rem;">✓ 20,000 Requests / Mo</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Custom CSS Injection</li>
-                            <li style="margin-bottom: 0.8rem;">✓ HTML Templates</li>
-                        </ul>
-                        <button class="btn btn-secondary" style="width: 100%; padding: 1rem;">Scale</button>
-                    </div>
-                    <!-- Enterprise -->
-                    <div class="brutal-card" style="padding: 2.5rem; border-color: var(--accent);">
-                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">ENTERPRISE</h3>
-                        <div style="font-size: 3.5rem; font-weight: 900; margin-bottom: 2rem;">$199</div>
-                        <ul style="list-style: none; margin-bottom: 3rem; font-size: 0.9rem;">
-                            <li style="margin-bottom: 0.8rem;">✓ 100,000 Requests / Mo</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Dedicated Rendering Nodes</li>
-                            <li style="margin-bottom: 0.8rem;">✓ Custom SLA & Support</li>
-                        </ul>
-                        <button class="btn btn-secondary" style="width: 100%; padding: 1rem; border-color: var(--accent); color: var(--accent);">Max Power</button>
+            <section
+                id="pricing"
+                style="
+                    padding: 8rem 0;
+                    background: #000;
+                    border-top: 4px solid #fff;
+                "
+            >
+                <div class="container">
+                    <div class="section-tag">Pricing</div>
+                    <h2
+                        style="
+                            font-size: 4rem;
+                            font-weight: 900;
+                            margin-bottom: 4rem;
+                        "
+                    >
+                        CHOOSE YOUR <span>POWER.</span>
+                    </h2>
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(
+                                auto-fit,
+                                minmax(280px, 1fr)
+                            );
+                            gap: 2rem;
+                        "
+                    >
+                        <!-- Starter -->
+                        <div class="brutal-card" style="padding: 2.5rem">
+                            <h3 style="font-size: 1.8rem; margin-bottom: 1rem">
+                                STARTER
+                            </h3>
+                            <div
+                                style="
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 2rem;
+                                "
+                            >
+                                $0
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    margin-bottom: 3rem;
+                                    font-size: 0.9rem;
+                                "
+                            >
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ 250 Requests / Mo
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Standard Stealth
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Community Support
+                                </li>
+                            </ul>
+                            <button
+                                class="btn btn-secondary"
+                                style="width: 100%; padding: 1rem"
+                            >
+                                Select
+                            </button>
+                        </div>
+                        <!-- Pro -->
+                        <div
+                            class="brutal-card"
+                            style="
+                                padding: 2.5rem;
+                                background: var(--accent);
+                                color: #000;
+                                border-color: #000;
+                                box-shadow: 12px 12px 0 #fff;
+                            "
+                        >
+                            <h3 style="font-size: 1.8rem; margin-bottom: 1rem">
+                                PRO
+                            </h3>
+                            <div
+                                style="
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 2rem;
+                                "
+                            >
+                                $29
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    margin-bottom: 3rem;
+                                    font-size: 0.9rem;
+                                    font-weight: 900;
+                                "
+                            >
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ 5,000 Requests / Mo
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Auto-Clean Heuristics
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Smart Stability
+                                </li>
+                            </ul>
+                            <button
+                                class="btn-primary"
+                                style="
+                                    width: 100%;
+                                    padding: 1rem;
+                                    border: 4px solid #000;
+                                "
+                            >
+                                Deploy Pro
+                            </button>
+                        </div>
+                        <!-- Business -->
+                        <div class="brutal-card" style="padding: 2.5rem">
+                            <h3 style="font-size: 1.8rem; margin-bottom: 1rem">
+                                BUSINESS
+                            </h3>
+                            <div
+                                style="
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 2rem;
+                                "
+                            >
+                                $99
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    margin-bottom: 3rem;
+                                    font-size: 0.9rem;
+                                "
+                            >
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ 20,000 Requests / Mo
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Custom CSS Injection
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ HTML Templates
+                                </li>
+                            </ul>
+                            <button
+                                class="btn btn-secondary"
+                                style="width: 100%; padding: 1rem"
+                            >
+                                Scale
+                            </button>
+                        </div>
+                        <!-- Enterprise -->
+                        <div
+                            class="brutal-card"
+                            style="padding: 2.5rem; border-color: var(--accent)"
+                        >
+                            <h3 style="font-size: 1.8rem; margin-bottom: 1rem">
+                                ENTERPRISE
+                            </h3>
+                            <div
+                                style="
+                                    font-size: 3.5rem;
+                                    font-weight: 900;
+                                    margin-bottom: 2rem;
+                                "
+                            >
+                                $199
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    margin-bottom: 3rem;
+                                    font-size: 0.9rem;
+                                "
+                            >
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ 100,000 Requests / Mo
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Dedicated Rendering Nodes
+                                </li>
+                                <li style="margin-bottom: 0.8rem">
+                                    ✓ Custom SLA & Support
+                                </li>
+                            </ul>
+                            <button
+                                class="btn btn-secondary"
+                                style="
+                                    width: 100%;
+                                    padding: 1rem;
+                                    border-color: var(--accent);
+                                    color: var(--accent);
+                                "
+                            >
+                                Max Power
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
+            </section>
+        </main>
 
-    <footer style="padding: 3rem 0; background: #000; border-top: 8px solid var(--accent);">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="footer-logo" style="font-size: 1.8rem;">RENDER<span>KIT</span></div>
-            <div style="text-align: right; color: var(--text-dim); font-size: 0.8rem; font-weight: 600;">
-                <p>© 2026 RenderKit Architecture // All Systems Nominal</p>
+        <footer
+            style="
+                padding: 3rem 0;
+                background: #000;
+                border-top: 8px solid var(--accent);
+            "
+        >
+            <div
+                class="container"
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                "
+            >
+                <div class="footer-logo" style="font-size: 1.8rem">
+                    RENDER<span>KIT</span>
+                </div>
+                <div
+                    style="
+                        text-align: right;
+                        color: var(--text-dim);
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                    "
+                >
+                    <p>© 2026 RenderKit Architecture // All Systems Nominal</p>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
 
-    <script src="config.js"></script>
-    <script src="script.js"></script>
-</body>
+        <script src="config.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>

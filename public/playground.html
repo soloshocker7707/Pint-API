@@ -1,79 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RenderKit API - Live Playground</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">RENDER<span>KIT</span></div>
-            <div class="nav-links">
-                <a href="index.html">Back Home</a>
-                <button id="auth-btn" class="btn btn-nav">Dashboard</button>
-            </div>
-        </nav>
-    </header>
-
-    <main class="container">
-        <div class="hero" style="margin-bottom: 3rem;">
-            <div class="hero-badge">LIVE PLAYGROUND</div>
-            <h1>TEST THE <span>ENGINE.</span></h1>
-            <p class="subtitle">Enter any URL below to see our advanced rendering engine in action. No mocks, just raw API power.</p>
-        </div>
-
-        <div class="playground-container">
-            <div class="controls">
-                <div class="control-group">
-                    <label>Target URL</label>
-                    <input type="text" id="target-url" placeholder="https://example.com" value="https://news.ycombinator.com">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RenderKit API - Live Playground</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="logo">RENDER<span>KIT</span></div>
+                <div class="nav-links">
+                    <a href="index.html">Back Home</a>
+                    <a href="docs.html">Docs</a>
+                    <button id="auth-btn" class="btn btn-nav">Dashboard</button>
                 </div>
+            </nav>
+        </header>
 
-                <div class="control-group">
-                    <label>Advanced Options</label>
-                    <label class="checkbox-group">
-                        <input type="checkbox" id="opt-clean" checked> Auto Clean Mode
-                    </label>
-                    <label class="checkbox-group">
-                        <input type="checkbox" id="opt-wait" checked> Smart Stabilization
-                    </label>
-                    <label class="checkbox-group">
-                        <input type="checkbox" id="opt-freeze" checked> Freeze Animations
-                    </label>
-                    <label class="checkbox-group">
-                        <input type="checkbox" id="opt-debug"> Debug Mode
-                    </label>
-                </div>
-
-                <button id="render-btn" class="btn btn-primary" style="width: 100%;">Render Screenshot</button>
-                <div id="error-display" class="error-msg"></div>
+        <main class="container">
+            <div class="hero" style="margin-bottom: 3rem">
+                <div class="hero-badge">LIVE PLAYGROUND</div>
+                <h1>TEST THE <span>ENGINE.</span></h1>
+                <p class="subtitle">
+                    Enter any URL below to see our advanced rendering engine in
+                    action. No mocks, just raw API power.
+                </p>
             </div>
 
-            <div class="preview-area" id="preview-area">
-                <div id="placeholder-text" style="color: #444; font-weight: 900; text-transform: uppercase;">Awaiting Input...</div>
-                <div id="render-status" class="render-status">RENDERING...</div>
-            </div>
-        </div>
+            <div class="playground-container">
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Target URL</label>
+                        <input
+                            type="text"
+                            id="target-url"
+                            placeholder="https://example.com"
+                            value="https://news.ycombinator.com"
+                        />
+                    </div>
 
-        <div id="debug-info" style="margin-top: 2rem; display: none;">
-            <div class="code-window">
-                <div class="window-header">
-                    <div class="dot red"></div>
-                    <div class="dot yellow"></div>
-                    <div class="dot green"></div>
-                    <div class="title">RENDER_LOGS.JSON</div>
+                    <div class="control-group">
+                        <label>Advanced Options</label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="opt-clean" checked />
+                            Auto Clean Mode
+                        </label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="opt-wait" checked />
+                            Smart Stabilization
+                        </label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="opt-freeze" checked />
+                            Freeze Animations
+                        </label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="opt-debug" /> Debug Mode
+                        </label>
+                    </div>
+
+                    <button
+                        id="render-btn"
+                        class="btn btn-primary"
+                        style="width: 100%"
+                    >
+                        Render Screenshot
+                    </button>
+                    <div id="error-display" class="error-msg"></div>
                 </div>
-                <div class="code-content" id="debug-content" style="font-size: 0.9rem; padding: 1.5rem;">
+
+                <div class="preview-area" id="preview-area">
+                    <div
+                        id="placeholder-text"
+                        style="
+                            color: #444;
+                            font-weight: 900;
+                            text-transform: uppercase;
+                        "
+                    >
+                        Awaiting Input...
+                    </div>
+                    <div id="render-status" class="render-status">
+                        RENDERING...
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="playground.js"></script>
-</body>
+            <div id="debug-info" style="margin-top: 2rem; display: none">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                        <div class="title">RENDER_LOGS.JSON</div>
+                    </div>
+                    <div
+                        class="code-content"
+                        id="debug-content"
+                        style="font-size: 0.9rem; padding: 1.5rem"
+                    ></div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <script src="config.js"></script>
+        <script src="playground.js"></script>
+    </body>
 </html>

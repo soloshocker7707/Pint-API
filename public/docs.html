@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RenderKit API - Developer Documentation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav>
+    <div class="logo">RENDER<span>KIT</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="playground.html">Playground</a>
+      <a href="#endpoints">Endpoints</a>
+      <a href="auth.html">Login</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" style="padding: 6rem 0 4rem;">
+      <div class="container">
+        <div class="hero-content" style="border-left: 8px solid var(--accent); padding-left: 3rem; max-width: 1050px;">
+          <div class="section-tag">Developer Documentation</div>
+          <h1 style="font-size: clamp(3.5rem, 8vw, 7rem); line-height: 0.85;">RenderKit API</h1>
+          <p class="hero-subtitle" style="font-size: 1.15rem; max-width: 880px; line-height: 1.6;">Production-grade browser rendering infrastructure for screenshots, PDFs, and Open Graph images. RenderKit is designed for reliable server-side captures with smart page stabilization, clean-mode heuristics, and API gateway controls.</p>
+          <div class="cta-group">
+            <a href="#quickstart" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Quickstart</a>
+            <a href="playground.html" class="btn btn-secondary" style="text-decoration: none; display: inline-block; margin-left: 1rem;">Open Playground</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 3rem 0; border-top: 4px solid var(--border); border-bottom: 4px solid var(--border); background: #050505;">
+      <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+          <div class="brutal-card" style="padding: 1.5rem; box-shadow: 8px 8px 0 var(--accent);"><div style="color: var(--accent); font-weight: 900; font-size: 0.75rem; margin-bottom: 0.7rem;">BASE URL</div><code>https://api.renderkit.com</code></div>
+          <div class="brutal-card" style="padding: 1.5rem; box-shadow: 8px 8px 0 var(--accent);"><div style="color: var(--accent); font-weight: 900; font-size: 0.75rem; margin-bottom: 0.7rem;">AUTHENTICATION</div><code>x-api-key</code></div>
+          <div class="brutal-card" style="padding: 1.5rem; box-shadow: 8px 8px 0 var(--accent);"><div style="color: var(--accent); font-weight: 900; font-size: 0.75rem; margin-bottom: 0.7rem;">RESPONSE MODES</div><code>JSON or binary</code></div>
+          <div class="brutal-card" style="padding: 1.5rem; box-shadow: 8px 8px 0 var(--accent);"><div style="color: var(--accent); font-weight: 900; font-size: 0.75rem; margin-bottom: 0.7rem;">VERSION</div><code>v1</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart" style="padding: 6rem 0;">
+      <div class="container">
+        <div class="section-tag">Quickstart</div>
+        <h2 style="font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; margin-bottom: 1.5rem;">Render your first screenshot.</h2>
+        <p style="color: var(--text-dim); max-width: 900px; line-height: 1.7; margin-bottom: 2rem;">Send a JSON payload to the capture endpoint with your API key. By default, RenderKit returns JSON with base64-encoded content and render metadata. Send an image or PDF Accept header when you need binary output directly.</p>
+        <div class="code-window" style="border: 4px solid var(--border); box-shadow: 12px 12px 0 var(--accent); min-height: auto; padding: 2rem; overflow-x: auto;">
+          <pre><code>curl -X POST https://api.renderkit.com/v1/screenshot/capture
+-H "Content-Type: application/json"
+-H "x-api-key: YOUR_API_KEY"
+-d '{ "url": "https://example.com", "width": 1280, "height": 800, "format": "png", "wait": "smart", "clean": true }'</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="endpoints" style="padding: 6rem 0; background: #080808; border-top: 4px solid var(--border);">
+      <div class="container">
+        <div class="section-tag">API Reference</div>
+        <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 3rem;">Endpoints</h2>
+        <div style="display: grid; gap: 2rem;">
+          <article class="brutal-card" style="padding: 2rem;"><div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;"><span class="section-tag" style="margin: 0;">POST</span><code>/v1/screenshot/capture</code></div><h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Screenshot Capture</h3><p style="color: var(--text-dim); line-height: 1.7; margin-bottom: 1.5rem;">Capture a URL, raw HTML document, or server-side template as a PNG or JPEG. Supports smart stabilization, full-page capture, custom viewport dimensions, custom CSS, clean mode, animation freezing, color scheme emulation, custom headers, and debug telemetry.</p><div class="code-window" style="min-height: auto; padding: 1.5rem; overflow-x: auto;"><pre><code>{ "url": "https://example.com", "width": 1280, "height": 800, "fullPage": false, "format": "jpeg", "quality": 70, "wait": "smart", "clean": true, "debug": false }</code></pre></div></article>
+          <article class="brutal-card" style="padding: 2rem;"><div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;"><span class="section-tag" style="margin: 0;">POST</span><code>/v1/screenshot/pdf</code></div><h3 style="font-size: 1.8rem; margin-bottom: 1rem;">PDF Generation</h3><p style="color: var(--text-dim); line-height: 1.7; margin-bottom: 1.5rem;">Convert URLs, raw HTML, or templates into print-ready PDF documents. Ideal for reports, invoices, statements, confirmations, receipts, and internal automation workflows.</p><div class="code-window" style="min-height: auto; padding: 1.5rem; overflow-x: auto;"><pre><code>{ "url": "https://example.com/report", "format": "A4", "landscape": false, "printBackground": true, "clean": false, "debug": false }</code></pre></div></article>
+          <article class="brutal-card" style="padding: 2rem;"><div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;"><span class="section-tag" style="margin: 0;">POST</span><code>/v1/screenshot/og</code></div><h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Open Graph Image Generation</h3><p style="color: var(--text-dim); line-height: 1.7; margin-bottom: 1.5rem;">Generate a 1200 by 630 PNG social preview image from structured text, theme values, and optional logo input. Useful for dynamic article cards, product launches, changelogs, dashboards, and campaign previews.</p><div class="code-window" style="min-height: auto; padding: 1.5rem; overflow-x: auto;"><pre><code>{ "title": "Launch faster with RenderKit", "description": "Screenshots, PDFs, and OG images from one API.", "theme": "dark", "background_color": "#000000", "logo_url": "https://example.com/logo.png" }</code></pre></div></article>
+          <article class="brutal-card" style="padding: 2rem;"><div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem;"><span class="section-tag" style="margin: 0;">GET</span><code>/health</code></div><h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Health Check</h3><p style="color: var(--text-dim); line-height: 1.7;">Returns service status and version metadata. This endpoint does not require authentication.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 6rem 0;">
+      <div class="container">
+        <div class="section-tag">Request Model</div>
+        <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 2rem;">Common parameters</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Input sources</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Use url for live pages, html for raw HTML documents, or template with data for server-side template rendering.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Rendering controls</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Set width, height, fullPage, wait, waitFor, waitForSelector, format, quality, and colorScheme to shape output behavior.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Page processing</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Enable clean, freezeAnimations, stealth, custom css, or request headers to control page preparation before capture.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Diagnostics and cache</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Use debug for render telemetry and noCache when you need a fresh browser render instead of a cached response.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 6rem 0; background: #050505; border-top: 4px solid var(--border); border-bottom: 4px solid var(--border);">
+      <div class="container">
+        <div class="section-tag">Responses</div>
+        <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 2rem;">JSON and binary output</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+          <div class="brutal-card" style="padding: 2rem;"><h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Default JSON response</h3><p style="color: var(--text-dim); line-height: 1.6; margin-bottom: 1rem;">Render endpoints return success, base64 content, render_time, request_id, and timestamp. Screenshots and OG images use image_base64. PDFs use pdf_base64.</p></div>
+          <div class="brutal-card" style="padding: 2rem;"><h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Binary response</h3><p style="color: var(--text-dim); line-height: 1.6; margin-bottom: 1rem;">Use Accept: image/png, Accept: image/jpeg, or Accept: application/pdf to receive the rendered file directly.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 6rem 0;">
+      <div class="container">
+        <div class="section-tag">Platform Notes</div>
+        <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 2rem;">Operational behavior</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Gateway-first access</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Production traffic should use the public API gateway with x-api-key. Direct backend access is protected by an internal gateway secret.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Caching</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Equivalent render requests are cached to reduce latency and browser work. Use noCache: true when fresh output is required.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Smart stabilization</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">The smart wait engine waits for fonts, lazy content, and DOM stability before capture, improving output consistency for SPAs and dynamic pages.</p></div>
+          <div class="feature-item" style="padding: 2rem; border: 1px solid #222;"><h3 style="font-size: 1.2rem;">Error model</h3><p style="font-size: 0.95rem; color: var(--text-dim); line-height: 1.6;">Validation errors return 400, authentication failures return 401, and render failures return structured JSON with render_failed.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="padding: 3rem 0; background: #000; border-top: 8px solid var(--accent);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div class="footer-logo" style="font-size: 1.8rem;">RENDER<span>KIT</span></div>
+      <div style="text-align: right; color: var(--text-dim); font-size: 0.8rem; font-weight: 600;"><p>Developer Documentation // Screenshots, PDFs, and OG images</p></div>
+    </div>
+  </footer>
+</body>
+</html>
