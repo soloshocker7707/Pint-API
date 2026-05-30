@@ -58,6 +58,11 @@ export default async function handler(req, res) {
     debug = false,
     headers = {},
     noCache = false,
+    pixelPerfect = false,
+    resourcePolicy = pixelPerfect ? "fidelity" : "balanced",
+    blockAdsByUrl = !pixelPerfect,
+    preserveStickyHeaders = true,
+    aggressiveClean = false,
   } = body;
 
   const cacheKey = JSON.stringify({
@@ -75,6 +80,11 @@ export default async function handler(req, res) {
     freezeAnimations,
     css,
     headers,
+    pixelPerfect,
+    resourcePolicy,
+    blockAdsByUrl,
+    preserveStickyHeaders,
+    aggressiveClean,
   });
 
   if (!noCache && (await cacheHas(cacheKey))) {
@@ -91,13 +101,11 @@ export default async function handler(req, res) {
   }
 
   if (!url && !template && !html) {
-    return res
-      .status(400)
-      .json({
-        success: false,
-        error: "validation_error",
-        message: "url, template, or html is required",
-      });
+    return res.status(400).json({
+      success: false,
+      error: "validation_error",
+      message: "url, template, or html is required",
+    });
   }
 
   let lastError = null;
@@ -108,14 +116,16 @@ export default async function handler(req, res) {
 
     try {
       page = await getPage();
-      // Block ads/tracking resources to speed up load
-      await blockAds(page);
+      // Block known ad/tracking URLs while preserving fidelity by default.
+      await blockAds(page, { resourcePolicy, blockAdsByUrl });
 
       const renderer = new Renderer(page, {
         clean,
         freezeAnimations,
         css,
         wait: "smart",
+        preserveStickyHeaders,
+        aggressiveClean,
       });
 
       if (template) {
@@ -189,12 +199,10 @@ export default async function handler(req, res) {
     }
   }
 
-  return res
-    .status(500)
-    .json({
-      success: false,
-      error: "render_failed",
-      message: lastError.message,
-      request_id: requestId,
-    });
+  return res.status(500).json({
+    success: false,
+    error: "render_failed",
+    message: lastError.message,
+    request_id: requestId,
+  });
 }

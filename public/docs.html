@@ -771,6 +771,47 @@
                                 <td>All render endpoints</td>
                                 <td>Bypasses cached output for the request.</td>
                             </tr>
+                            <tr>
+                                <td><code>pixelPerfect</code></td>
+                                <td>boolean</td>
+                                <td>Screenshot, PDF</td>
+                                <td>
+                                    Enables highest-fidelity defaults by
+                                    preserving images, media, fonts, and
+                                    URL-pattern ad assets.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>resourcePolicy</code></td>
+                                <td>string</td>
+                                <td>Screenshot, PDF</td>
+                                <td>
+                                    Controls resource blocking:
+                                    <code>fidelity</code>,
+                                    <code>balanced</code>, or
+                                    <code>performance</code>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>blockAdsByUrl</code></td>
+                                <td>boolean</td>
+                                <td>Screenshot, PDF</td>
+                                <td>
+                                    Controls URL-pattern ad/tracker blocking.
+                                    Defaults to false when
+                                    <code>pixelPerfect</code> is true.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>preserveStickyHeaders</code></td>
+                                <td>boolean</td>
+                                <td>Screenshot, PDF</td>
+                                <td>
+                                    Preserves normal sticky headers and
+                                    navigation while removing modal overlays and
+                                    popup-like elements.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </section>
@@ -879,6 +920,16 @@
                                 gateway. The backend expects an internal gateway
                                 secret and rejects direct unauthenticated
                                 traffic.
+                            </p>
+                        </div>
+                        <div class="doc-card">
+                            <h3>Pixel-perfect mode</h3>
+                            <p>
+                                Use <code>pixelPerfect: true</code> when the
+                                target page requires images, fonts, media, and
+                                sticky navigation to be preserved. Use balanced
+                                or performance modes when speed and cost matter
+                                more than exact visual fidelity.
                             </p>
                         </div>
                     </div>

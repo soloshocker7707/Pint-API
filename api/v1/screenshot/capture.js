@@ -65,6 +65,11 @@ export default async function handler(req, res) {
     headers = {},
     noCache = false,
     colorScheme = "light",
+    pixelPerfect = false,
+    resourcePolicy = pixelPerfect ? "fidelity" : "balanced",
+    blockAdsByUrl = !pixelPerfect,
+    preserveStickyHeaders = true,
+    aggressiveClean = false,
   } = body;
 
   // Feature 8: Cache Lookup
@@ -87,6 +92,11 @@ export default async function handler(req, res) {
     css,
     headers,
     colorScheme,
+    pixelPerfect,
+    resourcePolicy,
+    blockAdsByUrl,
+    preserveStickyHeaders,
+    aggressiveClean,
   });
   if (!noCache && (await cacheHas(cacheKey))) {
     const cached = await cacheGet(cacheKey);
@@ -121,8 +131,8 @@ export default async function handler(req, res) {
 
     try {
       page = await getPage();
-      // Block ads/tracking resources to speed up load
-      await blockAds(page);
+      // Block known ad/tracking URLs while preserving fidelity by default.
+      await blockAds(page, { resourcePolicy, blockAdsByUrl });
 
       const renderer = new Renderer(page, {
         clean,
@@ -131,6 +141,8 @@ export default async function handler(req, res) {
         wait,
         fullPage,
         colorScheme,
+        preserveStickyHeaders,
+        aggressiveClean,
       });
 
       // Feature 5: Template Screenshot handling
@@ -149,13 +161,11 @@ export default async function handler(req, res) {
             throw new Error(`Template ${template} not found`);
           }
         } catch (e) {
-          return res
-            .status(404)
-            .json({
-              success: false,
-              error: "template_not_found",
-              message: e.message,
-            });
+          return res.status(404).json({
+            success: false,
+            error: "template_not_found",
+            message: e.message,
+          });
         }
       } else if (html) {
         await page.setContent(html, { waitUntil: "networkidle0" });
